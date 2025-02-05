@@ -340,15 +340,16 @@
                                         </div>
 
                                     </div>
-                                    <div class="chat-footer">
-                                        <div class="input-group">
-                                            <textarea id="new-instruction" class="form-control" rows="1" placeholder="メッセージ入力しましょう。"></textarea>
-                                            <button id="calculateToken" class="btn btn-green">計算</button><button id="send-button" class="btn btn-primary">送信</button>
-                                        </div>
-                                    </div>
+
                                 </div>
                             </div>
                             <div id="conversationId" style="display: none;" data-conversation-id="${response.conversation_id}"></div>
+                        </div>
+                        <div class="chat-footer">
+                            <div class="input-group">
+                             <textarea id="new-instruction" class="form-control" rows="1" placeholder="メッセージ入力しましょう。"></textarea>
+                             <button id="calculateToken" class="btn btn-green">計算</button><button id="send-button" class="btn btn-primary">送信</button>
+                            </div>
                         </div>
                     `);
                     } else {
