@@ -25,7 +25,7 @@ class ChatController extends Controller
     public function chat_screen()
     {
         $user = auth()->user();
-        $conversations = Conversation::where('user_id', $user->id)->get();
+        $conversations = Conversation::where('user_id', $user->id)->orderBy('created_at', 'desc')->get();
 
         $prompt = Prompt::where('company_id', $user->company_id)->where('user_id', $user->id)->where('is_company_setting', 0)->first();
 
