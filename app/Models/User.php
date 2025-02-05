@@ -18,9 +18,11 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'company_id',
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -45,4 +47,20 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function company()
+    {
+        return $this->belongsTo(Companies::class, 'company_id');
+    }
+
+    public function isCompanyAdmin(): bool
+    {
+        return $this->role === 'Company admin';
+    }
+
+
+    public function isGeneralUser(): bool
+    {
+        return $this->role === 'General user';
+    }
+
 }

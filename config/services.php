@@ -35,4 +35,11 @@ return [
         ],
     ],
 
+    'anthropic' => [
+        'api_key' => env('ANTHROPIC_API_KEY'),
+    ],
+    'google' => [
+        'gemini_key' => env('GOOGLE_GEMINI_API_KEY'),
+    ],
+
 ];

@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 
 class LoginRequest extends FormRequest
@@ -28,7 +29,13 @@ class LoginRequest extends FormRequest
     {
         return [
             'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
+            'password' => ['required', 'max:255',
+                Password::min(8) //最低８文字必要
+                ->letters() //1文字以上のアルファベットを含むこと
+                ->mixedCase() //大文字と小文字のアルファベットを含むこと
+                ->numbers() //1文字以上の数字を含むこと
+                ->symbols()
+            ],
         ];
     }
 
