@@ -33,7 +33,7 @@ class ChatController extends Controller
             $prompt = Prompt::where('company_id', $user->company_id)->where('is_company_admin', 1)->where('is_company_setting', 1)->first();
         }
 
-        return view('general_user.chat.index',compact('prompt','user','conversations'));
+        return view('chat.index',compact('prompt','user','conversations'));
     }
 
     public function chat(Request $request)
@@ -104,7 +104,7 @@ class ChatController extends Controller
                 'conversation_id' => $conversation->id,
                 'is_success' => true,
                 'message' => $response,
-                'created_at' => $conversation->created_at->format('Y-m-d H:i')
+                'created_at' => $conversation->created_at->format('m-d H:i')
             ]);
         } catch (\Exception $e) {
             return response()->json([

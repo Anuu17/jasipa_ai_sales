@@ -100,7 +100,12 @@
                                                         </button>
                                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $conversation->id }}">
                                                             <li>
-                                                                <form action="{{ route('conversations.destroy', $conversation->id) }}" method="POST" style="display:inline;">
+                                                                @if($user->role === "General user")
+                                                                    <form action="{{ route('general_user.conversations.destroy', $conversation->id) }}" method="POST" style="display:inline;">
+                                                                        @elseif($user->role === "Company admin")
+                                                                            <form action="{{ route('company_admin.conversations.destroy', $conversation->id) }}" method="POST" style="display:inline;">
+                                                                @endif
+
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit" class="dropdown-item">Delete</button>
