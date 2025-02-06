@@ -531,16 +531,16 @@
             return;
         }
         const conversationId = $('#conversationId').data('conversation-id');
-        let tokenCountEndpoint = '';
-        if (userRole === "General user") {
-            tokenCountEndpoint = '/general_user/getTokenCount';
-        } else if (userRole === "Company admin") {
-            tokenCountEndpoint = '/company_admin/getTokenCount';
-        }
+        // let tokenCountEndpoint = '';
+        // if (userRole === "General user") {
+        //     tokenCountEndpoint = '/general_user/getTokenCount';
+        // } else if (userRole === "Company admin") {
+        //     tokenCountEndpoint = '/company_admin/getTokenCount';
+        // }
 
         $.ajax({
             method: 'GET',
-            url: tokenCountEndpoint,
+            url: '/getTokenCount',
             data: { text: newInstruction,
                 conversation_id: conversationId},
             headers: {

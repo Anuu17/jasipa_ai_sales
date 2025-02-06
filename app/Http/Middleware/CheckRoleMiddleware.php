@@ -13,9 +13,11 @@ class CheckRoleMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, string $roles): Response
     {
-        if($request->user()->role == $role){
+        $allowedRoles = explode('|', $roles);
+
+        if(in_array($request->user()->role, $allowedRoles)){
             return $next($request);
         }
         return redirect('/');
