@@ -269,8 +269,8 @@ class ChatController extends Controller
             return response()->json([
                 'is_success' => true,
                 'message' => $response,
-                'user_message_created_at' => $userMessage->created_at->format('Y-m-d H:i'),
-                'api_message_created_at' => $apiMessage->created_at->format('Y-m-d H:i')
+                'user_message_created_at' => $userMessage->created_at->format('m-d H:i'),
+                'api_message_created_at' => $apiMessage->created_at->format('m-d H:i')
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -312,7 +312,7 @@ class ChatController extends Controller
             'skillsAndExperience' => $conversation->skills_experience,
             'conversationHistory' => $conversationHistory,
             'conversation_id' => $conversation->id,
-            'created_at' => $conversation->created_at->format('Y-m-d H:i')
+            'created_at' => $conversation->created_at->format('m-d H:i')
 
         ]);
     }
