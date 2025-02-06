@@ -477,15 +477,15 @@
                         <div class="card-body">
                             <div class="chat" style="height: 600px; overflow-y: auto;">
                                 <div class="chat-bubbles" id="messages-container"></div>
-                                <div class="chat-footer">
-                                    <div class="input-group">
-                                        <textarea id="new-instruction" class="form-control" rows="1" placeholder="メッセージ入力しましょう。"></textarea>
-                                        <button id="calculateToken" class="btn btn-green">計算</button><button id="send-button" class="btn btn-primary">送信</button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         <div id="conversationId" style="display: none;" data-conversation-id="${response.conversation_id}"></div>
+                    </div>
+                    <div class="chat-footer">
+                        <div class="input-group">
+                            <textarea id="new-instruction" class="form-control" rows="1" placeholder="メッセージ入力しましょう。"></textarea>
+                            <button id="calculateToken" class="btn btn-green">計算</button><button id="send-button" class="btn btn-primary">送信</button>
+                        </div>
                     </div>
                 `);
                     response.conversationHistory.forEach(msg => {
@@ -531,10 +531,16 @@
             return;
         }
         const conversationId = $('#conversationId').data('conversation-id');
+        let tokenCountEndpoint = '';
+        if (userRole === "General user") {
+            tokenCountEndpoint = '/general_user/getTokenCount';
+        } else if (userRole === "Company admin") {
+            tokenCountEndpoint = '/company_admin/getTokenCount';
+        }
 
         $.ajax({
             method: 'GET',
-            url: '/getTokenCount',
+            url: tokenCountEndpoint,
             data: { text: newInstruction,
                 conversation_id: conversationId},
             headers: {
