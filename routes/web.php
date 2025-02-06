@@ -19,27 +19,19 @@ Route::middleware('auth')->group(function () {
 
 });
 
-
-
-//一般ユーザー
-Route::group(['middleware'=>['auth', 'verified','check_role:General user']],function () {
-
-    Route::get('general_user/chat', [ChatController::class, 'chat_screen'])->name('general_user.chat');
-    Route::post('/chat', [ChatController::class, 'chat']);
-    Route::post('general_user/api/chat', [ChatController::class, 'chat']);
-    Route::post('general_user/api/chat/new_message', [ChatController::class, 'newMessage']);
-    Route::post('chat/file_upload', [ChatController::class, 'file_upload']);
-    Route::post('general_user/prompt',[ChatController::class,'prompt_save'])->name('general_user.prompt.save');
-    Route::get('general_user/prompt/reset', [ChatController::class, 'prompt_reset'])->name('general_user.prompt.reset');
-    Route::get('general_user/conversation/{id}/details', [ChatController::class, 'getDetails'])->name('conversation.details');
-    Route::delete('general_user/conversations/{conversation}', [ChatController::class, 'destroy'])->name('general_user.conversations.destroy');
-//    Route::get('general_user/getTokenCount',[ChatController::class,'getTokenCount']);
-});
-
+//チャット画面関連
 Route::group(['middleware'=>['auth', 'verified','check_role:Company admin|General user']],function () {
     Route::post('/chat', [ChatController::class, 'chat']);
-
+    Route::post('/api/chat', [ChatController::class, 'chat']);
+    Route::get('chat_screen/chat', [ChatController::class, 'chat_screen'])->name('chat_screen.chat');
     Route::get('/getTokenCount',[ChatController::class,'getTokenCount']);
+    Route::post('chat_screen/prompt',[ChatController::class,'prompt_save'])->name('chat_screen.prompt.save');
+    Route::get('chat_screen/prompt/reset', [ChatController::class, 'prompt_reset'])->name('chat_screen.prompt.reset');
+    Route::post('/api/chat/new_message', [ChatController::class, 'newMessage']);
+    Route::get('/conversation/{id}/details', [ChatController::class, 'getDetails'])->name('conversation.details');
+    Route::delete('chat_screen/conversations/{conversation}', [ChatController::class, 'destroy'])->name('chat_screen.conversations.destroy');
+
+
 });
 
 //法人管理者
@@ -56,18 +48,6 @@ Route::group(['middleware'=>['auth', 'verified','check_role:Company admin']],fun
 
     Route::get('/prompt', [DashboardController::class, 'prompt_show'])->name('prompt');
     Route::post('/prompt/store', [DashboardController::class, 'prompt_store'])->name('prompt.store');
-
-    Route::post('/chat', [ChatController::class, 'chat']);
-    Route::post('company_admin/api/chat', [ChatController::class, 'chat']);
-    Route::get('company_admin/chat', [ChatController::class, 'chat_screen'])->name('company_admin.chat');
-    Route::post('company_admin/prompt',[ChatController::class,'prompt_save'])->name('company_admin.prompt.save');
-    Route::get('company_admin/prompt/reset', [ChatController::class, 'prompt_reset'])->name('company_admin.prompt.reset');
-
-    Route::post('company_admin/api/chat/new_message', [ChatController::class, 'newMessage']);
-    Route::get('company_admin/conversation/{id}/details', [ChatController::class, 'getDetails'])->name('conversation.details');
-    Route::delete('company_admin/conversations/{conversation}', [ChatController::class, 'destroy'])->name('company_admin.conversations.destroy');
-
-//    Route::get('company_admin/getTokenCount',[ChatController::class,'getTokenCount']);
 
 });
 

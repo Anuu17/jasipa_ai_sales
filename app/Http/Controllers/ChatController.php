@@ -193,14 +193,9 @@ class ChatController extends Controller
             ]
         );
 
-         if ($isCompanyAdmin === 0){
-        return redirect()->route('general_user.chat')->with('success', 'プロンプトが保存されました。');
-         }
-
-         else {
-        return redirect()->route('company_admin.chat')->with('success', 'プロンプトが保存されました。');
-         }
+        return redirect()->route('chat_screen.chat')->with('success', 'プロンプトが保存されました。');
     }
+
     public function prompt_reset(Request $request)
     {
         $user = auth()->user();
@@ -210,13 +205,7 @@ class ChatController extends Controller
         if ($userPrompt) {
             $userPrompt->delete();
         }
-
-        if ($user->role === 'General user'){
-            return redirect()->route('general_user.chat')->with('success', 'プロンプトが初期化されました。');
-        }
-        elseif ($user->role === 'Company admin') {
-            return redirect()->route('company_admin.chat')->with('success', 'プロンプトが初期化されました。');
-        }
+            return redirect()->route('chat_screen.chat')->with('success', 'プロンプトが初期化されました。');
 
     }
 

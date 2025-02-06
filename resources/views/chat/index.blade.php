@@ -53,21 +53,12 @@
                                 Chat
                             </h2>
                         </div>
-                        @if($user->role === "General user")
                             <div class="col text-end">
-                                <a type="button" class="btn btn-primary" href="{{route('general_user.chat')}}">
+                                <a type="button" class="btn btn-primary" href="{{route('chat_screen.chat')}}">
                                     <i class="fa-solid fa-plus"></i>
                                     <span>新規チャト</span>
                                 </a>
                             </div>
-                        @elseif($user->role === "Company admin")
-                            <div class="col text-end">
-                                <a type="button" class="btn btn-primary" href="{{route('company_admin.chat')}}">
-                                    <i class="fa-solid fa-plus"></i>
-                                    <span>新規チャト</span>
-                                </a>
-                            </div>
-                        @endif
                     </div>
                 </div>
             </div>
@@ -100,12 +91,7 @@
                                                         </button>
                                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton{{ $conversation->id }}">
                                                             <li>
-                                                                @if($user->role === "General user")
-                                                                    <form action="{{ route('general_user.conversations.destroy', $conversation->id) }}" method="POST" style="display:inline;">
-                                                                        @elseif($user->role === "Company admin")
-                                                                            <form action="{{ route('company_admin.conversations.destroy', $conversation->id) }}" method="POST" style="display:inline;">
-                                                                @endif
-
+                                                                    <form action="{{ route('chat_screen.conversations.destroy', $conversation->id) }}" method="POST" style="display:inline;">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="submit" class="dropdown-item">Delete</button>
@@ -169,21 +155,12 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                                @if($user->role === "General user")
-                                                    <form action="{{ route('general_user.prompt.save') }}" method="POST" style="display:inline;">
-                                                @elseif($user->role === "Company admin")
-                                                    <form action="{{ route('company_admin.prompt.save') }}" method="POST" style="display:inline;">
-                                                @endif
-
+                                                    <form action="{{ route('chat_screen.prompt.save') }}" method="POST" style="display:inline;">
                                                 @csrf
                                                     <div class="text-end">
                                                     <button type="submit" name="prompt_save" class="btn btn-outline-info disable-on-load">プロンプト保存</button>
+                                                        <a href="{{ route('chat_screen.prompt.reset') }}" id="prompt_reset" class="btn btn-outline-danger disable-on-load" data-disabled="false">初期化</a>
 
-                                                    @if($user->role === "General user")
-                                                        <a href="{{ route('general_user.prompt.reset') }}" id="prompt_reset" class="btn btn-outline-danger disable-on-load" data-disabled="false">初期化</a>
-                                                    @elseif($user->role === "Company admin")
-                                                        <a href="{{ route('company_admin.prompt.reset') }}" id="prompt_reset" class="btn btn-outline-danger disable-on-load" data-disabled="false">初期化</a>
-                                                    @endif
                                                 </div>
 
                                                 <textarea name="message" id="message" class="form-control" rows="3" autocomplete="off" placeholder="メッセージを入力しましょう">{{ $prompt->message }}</textarea>
@@ -309,16 +286,16 @@
             formData.append('projectDetails', projectDetails);
             formData.append('skillsAndExperience', skillsAndExperience);
             // formData.append('optionalInstructions', optionalInstructions);
-            let apiEndpoint = '';
-            if (userRole === "General user") {
-                apiEndpoint = '/general_user/api/chat';
-            } else if (userRole === "Company admin") {
-                apiEndpoint = '/company_admin/api/chat';
-            }
+            // let apiEndpoint = '';
+            // if (userRole === "General user") {
+            //     apiEndpoint = '/general_user/api/chat';
+            // } else if (userRole === "Company admin") {
+            //     apiEndpoint = '/company_admin/api/chat';
+            // }
 
             $.ajax({
                 type: "POST",
-                url: apiEndpoint,
+                url: '/api/chat',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -379,12 +356,12 @@
         }
         const conversationId = $('#conversationId').data('conversation-id');
 
-        let apiEndpoint = '';
-        if (userRole === "General user") {
-            apiEndpoint = '/general_user/api/chat/new_message';
-        } else if (userRole === "Company admin") {
-            apiEndpoint = '/company_admin/api/chat/new_message';
-        }
+        // let apiEndpoint = '';
+        // if (userRole === "General user") {
+        //     apiEndpoint = '/general_user/api/chat/new_message';
+        // } else if (userRole === "Company admin") {
+        //     apiEndpoint = '/company_admin/api/chat/new_message';
+        // }
 
         $('#send-button').prop('disabled', true);
         $('#messages-container').append(`
@@ -399,7 +376,7 @@
 
         $.ajax({
             type: "POST",
-            url: apiEndpoint,
+            url: '/api/chat/new_message',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
@@ -453,15 +430,15 @@
 
             var conversationId = $(this).data('id');
             const fileInput = document.getElementById("upload_file");
-            let apiEndpoint = '';
-            if (userRole === "General user") {
-                apiEndpoint = '/general_user/conversation/';
-            } else if (userRole === "Company admin") {
-                apiEndpoint = '/company_admin/conversation/';
-            }
+            // let apiEndpoint = '';
+            // if (userRole === "General user") {
+            //     apiEndpoint = '/general_user/conversation/';
+            // } else if (userRole === "Company admin") {
+            //     apiEndpoint = '/company_admin/conversation/';
+            // }
 
             $.ajax({
-                url: apiEndpoint + conversationId + '/details',
+                url: '/conversation/' + conversationId + '/details',
                 method: 'GET',
                 success: function (response) {
                     $('#message').val(response.message).prop('disabled', true);
