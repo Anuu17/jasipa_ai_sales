@@ -41,8 +41,8 @@ class ChatController extends Controller
 
         $user = auth()->user();
         $fileResponse = $this->file_upload($request);
-
-
+        $fileOriginalName = $request->file('file')->getClientOriginalName();
+        $filenameWithoutExtension = pathinfo($fileOriginalName, PATHINFO_FILENAME);
         $filePath = $fileResponse->getData()->file_path;
 
         $conversation = Conversation::create([
@@ -50,6 +50,7 @@ class ChatController extends Controller
             'prompt_message' => $request->input('message'),
             'project_details' => $request->input('projectDetails'),
             'skills_experience' => $request->input('skillsAndExperience'),
+            'label' => $filenameWithoutExtension,
             'upload_file' => $filePath,
         ]);
 
@@ -102,6 +103,7 @@ class ChatController extends Controller
 
             return response()->json([
                 'conversation_id' => $conversation->id,
+                'conversation_label' => $conversation->label,
                 'is_success' => true,
                 'message' => $response,
                 'created_at' => $conversation->created_at->format('m-d H:i')

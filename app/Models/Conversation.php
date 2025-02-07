@@ -14,6 +14,7 @@ class Conversation extends Model
     protected $fillable = [
         'user_id',
         'title',
+        'label',
         'prompt_message',
         'project_details',
         'skills_experience',

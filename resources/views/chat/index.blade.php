@@ -115,10 +115,10 @@
                                                        role="tab"
                                                        aria-selected="{{ $loop->first ? 'true' : 'false' }}">
                                                         <div class="d-flex flex-column">
-                                                            <div class="fw-bold">美咲</div>
-                                                            <div class="text-secondary text-truncate w-100">
-                                                                {{ $conversation->prompt_message }}
-                                                            </div>
+                                                            <div class="fw-bold">{{$conversation->label}}</div>
+{{--                                                            <div class="text-secondary text-truncate w-100">--}}
+{{--                                                                {{ $conversation->prompt_message }}--}}
+{{--                                                            </div>--}}
                                                         </div>
                                                     </a>
                                                 </div>
@@ -334,6 +334,48 @@
                             </div>
                         </div>
                     `);
+                        $('.nav.flex-column').prepend(`
+                <div class="d-flex align-items-center">
+                    <div class="col-auto">
+                        <div class="dropdown">
+                            <button class="btn btn-link text-muted p-0" type="button" id="dropdownMenuButton${response.conversation_id}" data-bs-toggle="dropdown" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                    <circle cx="12" cy="12" r="1"></circle>
+                                    <circle cx="12" cy="5" r="1"></circle>
+                                    <circle cx="12" cy="19" r="1"></circle>
+                                </svg>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton${response.conversation_id}">
+                                <li>
+                                    <form action="/chat_screen/conversations/${response.conversation_id}" method="POST" style="display:inline;">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="dropdown-item">Delete</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-auto">
+                        <span class="avatar rounded-circle" style="background-image: url('/default-files/avatar-girl.png')"></span>
+                    </div>
+
+                    <div class="col text-body">
+                        <a href="${response.conversation_id}" class="nav-link conversation-tab text-start mw-100 p-3 active"
+                           data-id="${response.conversation_id}"
+                           data-bs-toggle="pill"
+                           role="tab"
+                           aria-selected="true">
+                            <div class="d-flex flex-column">
+                                <div class="fw-bold">${response.conversation_label}</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            `);
+                        $('.nav-link').removeClass('active');
+                        $(`a[href="${response.conversation_id}"]`).addClass('active');
                     } else {
                         alert(response.errors_message.join('\n'));
                     }
