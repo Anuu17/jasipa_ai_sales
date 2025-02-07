@@ -97,7 +97,14 @@
                                                                     <button type="submit" class="dropdown-item">Delete</button>
                                                                 </form>
                                                             </li>
+                                                            <li>
+                                                                <button type="button" class="dropdown-item edit-btn" data-bs-toggle="modal" data-bs-target="#editConversationModal" data-id="{{ $conversation->id }}" data-label="{{ $conversation->label }}">
+                                                                    Edit
+                                                                </button>
+                                                            </li>
+
                                                         </ul>
+
                                                     </div>
                                                 </div>
 
@@ -116,15 +123,30 @@
                                                        aria-selected="{{ $loop->first ? 'true' : 'false' }}">
                                                         <div class="d-flex flex-column">
                                                             <div class="fw-bold">{{$conversation->label}}</div>
-{{--                                                            <div class="text-secondary text-truncate w-100">--}}
-{{--                                                                {{ $conversation->prompt_message }}--}}
-{{--                                                            </div>--}}
                                                         </div>
                                                     </a>
+
                                                 </div>
 
                                             </div>
                                         @endforeach
+                                            <div class="modal" id="editConversationModal" tabindex="-1">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">チャット名の編集</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <textarea class="form-control" id="editConversationLabel" ></textarea>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn me-auto" data-bs-dismiss="modal">キャンセル</button>
+                                                            <button type="button" class="btn btn-primary update-label" data-bs-dismiss="modal">更新</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                     </div>
                                 </div>
                             </div>
@@ -166,13 +188,6 @@
                                                 <textarea name="message" id="message" class="form-control" rows="3" autocomplete="off" placeholder="メッセージを入力しましょう">{{ $prompt->message }}</textarea>
 
                                             </form>
-
-{{--                                            <form action="{{ route('prompt.reset') }}" method="POST" style="display:inline;">--}}
-{{--                                                @csrf--}}
-{{--                                                <div class = "text-end">--}}
-{{--                                                <button type="submit" class="btn btn-outline-danger">初期化</button>--}}
-{{--                                                </div>--}}
-{{--                                            </form>--}}
                                                 <div class="d-flex align-items-center">
                                                     <div class="w-100">
                                                         <h4 class="mb-1">案件内容</h4>
@@ -189,7 +204,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-{{--                                            <form id="messageForm" action="" method="POST" enctype="multipart/form-data">--}}
                                             <div class="d-flex align-items-center">
                                                 <div class="w-100">
                                                     <h4 class="mb-1">スキルシート</h4>
@@ -199,20 +213,11 @@
                                                     </div>
                                                 </div>
                                             </div>
-{{--                                            <div class="d-flex align-items-center">--}}
-{{--                                                <div class="w-100">--}}
-{{--                                                    <h4 class="mt-3 mb-1">私の指示（オプション）</h4>--}}
-{{--                                                    <div class="input-group input-group-flat">--}}
-{{--                                                        <textarea id="optional-instructions" class="form-control" rows="1" autocomplete="off" placeholder="特別な指示があればどうぞ。あなたの要望に合わせて対応します!"></textarea>--}}
-{{--                                                    </div>--}}
-{{--                                                </div>--}}
-{{--                                            </div>--}}
                                             <div class="d-flex align-items-center">
                                                 <div class="w-100">
                                                         <button id="sendMessage" type="submit" class="form-control btn btn-purple"> マッチングを始めましょう!　　<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-send"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 14l11 -11" /><path d="M21 3l-6.5 18a.55 .55 0 0 1 -1 0l-3.5 -7l-7 -3.5a.55 .55 0 0 1 0 -1l18 -6.5" /></svg></button>
                                                 </div>
                                             </div>
-{{--                                            </form>--}}
                                             <div class="mt-3">
                                                 <div class="d-flex align-items-center">
                                                         <span class="badge badge-pill bg-red-lt"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-sparkles"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6z" /></svg>マッチング成功：50件</span>
@@ -285,14 +290,6 @@
             formData.append('message', message);
             formData.append('projectDetails', projectDetails);
             formData.append('skillsAndExperience', skillsAndExperience);
-            // formData.append('optionalInstructions', optionalInstructions);
-            // let apiEndpoint = '';
-            // if (userRole === "General user") {
-            //     apiEndpoint = '/general_user/api/chat';
-            // } else if (userRole === "Company admin") {
-            //     apiEndpoint = '/company_admin/api/chat';
-            // }
-
             $.ajax({
                 type: "POST",
                 url: '/api/chat',
@@ -353,6 +350,11 @@
                                         <button type="submit" class="dropdown-item">Delete</button>
                                     </form>
                                 </li>
+                                <li>
+                                   <button type="button" class="dropdown-item edit-btn" data-bs-toggle="modal" data-bs-target="#editConversationModal" data-id="${response.conversation_id}" data-label="${response.conversation_label}">
+                                        Edit
+                                   </button>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -375,7 +377,6 @@
                 </div>
             `);
                         $('.nav-link').removeClass('active');
-                        $(`a[href="${response.conversation_id}"]`).addClass('active');
                     } else {
                         alert(response.errors_message.join('\n'));
                     }
@@ -397,13 +398,6 @@
             return;
         }
         const conversationId = $('#conversationId').data('conversation-id');
-
-        // let apiEndpoint = '';
-        // if (userRole === "General user") {
-        //     apiEndpoint = '/general_user/api/chat/new_message';
-        // } else if (userRole === "Company admin") {
-        //     apiEndpoint = '/company_admin/api/chat/new_message';
-        // }
 
         $('#send-button').prop('disabled', true);
         $('#messages-container').append(`
@@ -472,12 +466,6 @@
 
             var conversationId = $(this).data('id');
             const fileInput = document.getElementById("upload_file");
-            // let apiEndpoint = '';
-            // if (userRole === "General user") {
-            //     apiEndpoint = '/general_user/conversation/';
-            // } else if (userRole === "Company admin") {
-            //     apiEndpoint = '/company_admin/conversation/';
-            // }
 
             $.ajax({
                 url: '/conversation/' + conversationId + '/details',
@@ -550,13 +538,6 @@
             return;
         }
         const conversationId = $('#conversationId').data('conversation-id');
-        // let tokenCountEndpoint = '';
-        // if (userRole === "General user") {
-        //     tokenCountEndpoint = '/general_user/getTokenCount';
-        // } else if (userRole === "Company admin") {
-        //     tokenCountEndpoint = '/company_admin/getTokenCount';
-        // }
-
         $.ajax({
             method: 'GET',
             url: '/getTokenCount',
@@ -574,7 +555,6 @@
                 </div>
             `;
 
-                // Append it after the .chat-footer
                 $('.chat-footer').after(tokenCountHtml);
 
             },
@@ -584,6 +564,39 @@
             }
         });
 
+
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $(".edit-btn").on("click", function () {
+            conversationId = $(this).data("id");
+            let label = $(this).data("label");
+
+
+            $("#editConversationLabel").val(label);
+        });
+
+        $(".update-label").on("click", function () {
+            let updateLabel = $("#editConversationLabel").val();
+
+            $.ajax({
+                url: "/conversation/update/" + conversationId,
+                type: "PUT",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    label: updateLabel
+                },
+                success: function (response) {
+                    alert(response.message);
+                    $(".conversation-tab[data-id='" + conversationId + "'] .fw-bold").text(updatedLabel);
+                },
+                error: function (xhr) {
+                    alert("Error updating label!");
+                }
+            });
+
+        });
 
     });
 </script>

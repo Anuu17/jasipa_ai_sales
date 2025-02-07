@@ -30,6 +30,7 @@ Route::group(['middleware'=>['auth', 'verified','check_role:Company admin|Genera
     Route::post('/api/chat/new_message', [ChatController::class, 'newMessage']);
     Route::get('/conversation/{id}/details', [ChatController::class, 'getDetails'])->name('conversation.details');
     Route::delete('chat_screen/conversations/{conversation}', [ChatController::class, 'destroy'])->name('chat_screen.conversations.destroy');
+    Route::put('/conversation/update/{id}', [ChatController::class, 'updateLabel']);
 
 
 });

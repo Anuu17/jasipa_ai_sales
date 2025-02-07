@@ -322,25 +322,30 @@ class ChatController extends Controller
             ->latest('created_at')
             ->first();
 
-//        $previousToken = Message::where('conversation_id', $conversation->id)
-//            ->sum('cache_creation');
-
         $text = $request->input('text');
         $length = mb_strlen($text, 'UTF-8');
         $newMessageTokenCount = ceil($length * 1.5);
 
         if (!$lastMessage || $lastMessage->created_at < $fiveMinutesAgo) {
-            // Cache expired - new cache key will store the entire conversation again
+
         $totalPreviousTokens = Message::where('conversation_id', $conversation->id)
             ->sum('cache_creation');
 
         $estimatedNewCacheToken = $totalPreviousTokens + $newMessageTokenCount;
         } else {
-        // Cache is still valid - add only the last message's cache_creation
+
         $estimatedNewCacheToken = $lastMessage->cache_creation + $newMessageTokenCount;
         }
 
 
         return response()->json(['token_count' => $estimatedNewCacheToken]);
+    }
+    public function updateLabel(Request $request, $id)
+    {
+        $conversation = Conversation::find($id);
+        $conversation->label = $request->label;
+        $conversation->save();
+
+        return response()->json(['message' => 'Label updated successfully']);
     }
 }
