@@ -253,7 +253,6 @@
 <script src="{{asset('admin/assets/dist/js/tabler.min.js?1692870487')}}" defer></script>
 <script src="{{asset('admin/assets//dist/js/demo.min.js?1692870487')}}" defer></script>
 <script>
-    // Embed user's role into a JavaScript variable
     const userRole = @json($user->role);
 </script>
 
@@ -569,16 +568,21 @@
 </script>
 <script>
     $(document).ready(function () {
-        $(".edit-btn").on("click", function () {
+        let conversationId;
+
+        $(document).on("click", ".edit-btn", function () {
             conversationId = $(this).data("id");
             let label = $(this).data("label");
-
 
             $("#editConversationLabel").val(label);
         });
 
         $(".update-label").on("click", function () {
             let updateLabel = $("#editConversationLabel").val();
+
+            if (!conversationId) {
+                conversationId = $("#conversationId").data("conversation-id");
+            }
 
             $.ajax({
                 url: "/conversation/update/" + conversationId,
@@ -589,7 +593,9 @@
                 },
                 success: function (response) {
                     alert(response.message);
-                    $(".conversation-tab[data-id='" + conversationId + "'] .fw-bold").text(updatedLabel);
+                    $(".conversation-tab[data-id='" + conversationId + "'] .fw-bold").text(updateLabel);
+
+                    $(`.edit-btn[data-id='${conversationId}']`).data('label', updateLabel).attr('data-label', updateLabel);
                 },
                 error: function (xhr) {
                     alert("Error updating label!");
