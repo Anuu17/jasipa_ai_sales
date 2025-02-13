@@ -79,7 +79,7 @@
                                 <div class="card-body p-0 scrollable" style="max-height: 38rem">
                                     <div class="nav flex-column nav-pills" role="tablist">
                                         @foreach($conversations as $conversation)
-                                            <div class="d-flex align-items-center">
+                                            <div class="d-flex align-items-center conversation-item">
                                                 <div class="col-auto">
                                                     <div class="dropdown">
                                                         <button class="btn btn-link text-muted p-0" type="button" id="dropdownMenuButton{{ $conversation->id }}" data-bs-toggle="dropdown" aria-expanded="false">
@@ -335,7 +335,7 @@
                         </div>
                     `);
                         $('.nav.flex-column').prepend(`
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center conversation-item">
                     <div class="col-auto">
                         <div class="dropdown">
                             <button class="btn btn-link text-muted p-0" type="button" id="dropdownMenuButton${response.conversation_id}" data-bs-toggle="dropdown" aria-expanded="false">
@@ -610,7 +610,33 @@
 
     });
 </script>
+<script>
+    $(document).ready(function () {
 
+        $("<style>")
+            .prop("type", "text/css")
+            .html(".hidden-element { display: none !important; }")
+            .appendTo("head");
+
+        $(".form-control").on("keyup", function () {
+            var searchText = $(this).val().toLowerCase();
+
+            $(".d-flex.align-items-center.conversation-item").each(function () {
+                var text = $(this).find(".fw-bold").text().toLowerCase();
+
+                if (text.includes(searchText) || searchText === "") {
+                    $(this).removeClass("hidden-element");
+                } else {
+                    $(this).addClass("hidden-element");
+                }
+            });
+        });
+    });
+
+</script>
+
+
+</script>
 
 </body>
 </html>
