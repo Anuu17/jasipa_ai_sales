@@ -663,11 +663,11 @@
             event.preventDefault();
 
             if ($("#promptContent").is(":visible")) {
-                $("#promptContent").slideUp(300);
+                $("#promptContent").hide('slow');
                 $("#eyeOpen").show();
                 $("#eyeClosed").hide();
             } else {
-                $("#promptContent").slideDown(300);
+                $("#promptContent").show('slow');
                 $("#eyeOpen").hide();
                 $("#eyeClosed").show();
             }
