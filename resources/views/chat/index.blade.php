@@ -73,7 +73,7 @@
                                   <span class="input-icon-addon"> <!-- Download SVG icon from http://tabler-icons.io/i/search -->
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>
                                   </span>
-                                        <input type="text" class="form-control" placeholder="Search…" aria-label="Search" id="searchConversations" >
+                                        <input type="text" class="form-control search" placeholder="Search…" aria-label="Search" id="searchConversations" >
                                     </div>
                                 </div>
                                 <div class="card-body p-0 scrollable" style="max-height: 38rem">
@@ -177,18 +177,38 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                                    <form action="{{ route('chat_screen.prompt.save') }}" method="POST" style="display:inline;">
+                                            <form action="{{ route('chat_screen.prompt.save') }}" method="POST" class="w-100">
                                                 @csrf
-                                                    <div class="text-end">
-                                                    <button type="submit" name="prompt_save" class="btn btn-outline-info disable-on-load">プロンプト保存</button>
-                                                        <a href="{{ route('chat_screen.prompt.reset') }}" id="prompt_reset" class="btn btn-outline-danger disable-on-load" data-disabled="false">初期化</a>
-
+                                                <div class="d-flex align-items-center justify-content-between">
+                                                    <h4 class="mb-1 d-flex align-items-center">
+                                                        プロンプト
+                                                        <button id="togglePrompt" type="button" class="btn btn-link text-muted p-0 ms-2 border-0 shadow-none">
+                                                            <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-eye">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                                <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                                                <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                                            </svg>
+                                                            <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-eye-off d-none">
+                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                                <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                                                <path d="M3 3l18 18" />
+                                                                <path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                                            </svg>
+                                                        </button>
+                                                    </h4>
                                                 </div>
 
-                                                <textarea name="message" id="message" class="form-control" rows="3" autocomplete="off" placeholder="メッセージを入力しましょう">{{ $prompt->message }}</textarea>
+                                                <div id="promptContent" class="d-none">
+                                                    <textarea name="message" id="message" class="form-control mt-2" rows="3" autocomplete="off" placeholder="メッセージを入力しましょう">{{ $prompt->message }}</textarea>
 
+                                                    <div class="text-end mt-2">
+                                                        <button type="submit" name="prompt_save" class="btn btn-outline-info disable-on-load">プロンプト保存</button>
+                                                        <a href="{{ route('chat_screen.prompt.reset') }}" id="prompt_reset" class="btn btn-outline-danger disable-on-load" data-disabled="false">初期化</a>
+                                                    </div>
+                                                </div>
                                             </form>
-                                                <div class="d-flex align-items-center">
+
+                                            <div class="d-flex align-items-center">
                                                     <div class="w-100">
                                                         <h4 class="mb-1">案件内容</h4>
                                                         <div class="input-group input-group-flat">
@@ -281,6 +301,7 @@
                     <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
+
             `);
 
             const formData = new FormData();
@@ -334,6 +355,7 @@
                             </div>
                         </div>
                     `);
+
                         $('.nav.flex-column').prepend(`
                 <div class="d-flex align-items-center conversation-item">
                     <div class="col-auto">
@@ -618,7 +640,7 @@
             .html(".hidden-element { display: none !important; }")
             .appendTo("head");
 
-        $(".form-control").on("keyup", function () {
+        $(".form-control.search").on("keyup", function () {
             var searchText = $(this).val().toLowerCase();
 
             $(".d-flex.align-items-center.conversation-item").each(function () {
@@ -634,9 +656,16 @@
     });
 
 </script>
+<script>
+    $(document).ready(function () {
+        $("#togglePrompt").click(function (event) {
+            event.preventDefault();
 
-
+            $("#promptContent").toggleClass("d-none");
+            $("#eyeOpen").toggleClass("d-none");
+            $("#eyeClosed").toggleClass("d-none");
+        });
+    });
 </script>
-
 </body>
 </html>
