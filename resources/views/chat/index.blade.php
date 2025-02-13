@@ -73,7 +73,7 @@
                                   <span class="input-icon-addon"> <!-- Download SVG icon from http://tabler-icons.io/i/search -->
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path><path d="M21 21l-6 -6"></path></svg>
                                   </span>
-                                        <input type="text" value="" class="form-control" placeholder="Search…" aria-label="Search">
+                                        <input type="text" class="form-control" placeholder="Search…" aria-label="Search" id="searchConversations" >
                                     </div>
                                 </div>
                                 <div class="card-body p-0 scrollable" style="max-height: 38rem">
@@ -283,7 +283,6 @@
             </div>
             `);
 
-
             const formData = new FormData();
             formData.append('file', fileInput.files[0]);
             formData.append('message', message);
@@ -300,6 +299,11 @@
                 contentType: false,
                 success: function (response) {
                     if (response.is_success) {
+                        $('#sendMessage').prop('disabled', true);
+                        $('#project-details').prop('disabled', true);
+                        $('#skills-experience').prop('disabled', true);
+                        $(fileInput).prop('disabled', true);
+                        $('#message').prop('disabled',true);
                         const now = new Date();
                         $('#output-container').html(`
                         <div class="card">
@@ -606,6 +610,7 @@
 
     });
 </script>
+
 
 </body>
 </html>
