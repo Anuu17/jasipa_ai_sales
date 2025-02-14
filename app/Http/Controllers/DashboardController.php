@@ -22,7 +22,7 @@ class DashboardController extends Controller
         if ($user->role === "Company admin") {
             return view('company_admin.dashboard');
         } elseif ($user->role === "General user") {
-            return view('general_user.dashboard');
+            return redirect()->route('chat_screen.chat');
         }
 
         abort(403, 'Unauthorized');
