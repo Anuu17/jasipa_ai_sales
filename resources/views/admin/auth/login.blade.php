@@ -27,15 +27,18 @@
 <script src="./dist/js/demo-theme.min.js?1692870487"></script>
 <div class="page page-center">
     <div class="container container-tight py-4">
-        <div class="text-center mb-4">
-            <a href="." class="navbar-brand navbar-brand-autodark">
-                <img src="./static/logo.svg" width="110" height="32" alt="Tabler" class="navbar-brand-image">
-            </a>
-        </div>
+{{--        <div class="text-center mb-4">--}}
+{{--            <a href="." class="navbar-brand navbar-brand-autodark">--}}
+{{--                <img src="/default-files/jasipa.png" >--}}
+{{--            </a>--}}
+{{--        </div>--}}
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
         <div class="card card-md">
             <div class="card-body">
+                <div class="text-center mb-4">
+                <img src="/default-files/jasipa_logo.png" >
+                </div>
                 <h2 class="h2 text-center mb-4">Login to your account</h2>
                 <form action="{{ route('admin.login.store') }}" method="POST" autocomplete="off" novalidate>
                     @csrf
