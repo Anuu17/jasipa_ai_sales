@@ -295,14 +295,19 @@
                 alert('Error: ファイルを選択してください。');
                 return;
             }
+
             $('#output-container').html(`
             <div class="d-flex justify-content-center align-items-center" style="height: 600px;">
                 <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
             </div>
-
             `);
+
+
+
+
+
 
             const formData = new FormData();
             formData.append('file', fileInput.files[0]);
@@ -355,6 +360,8 @@
                             </div>
                         </div>
                     `);
+                        const outputContainer = $('#output-container');
+                        outputContainer.scrollTop(outputContainer[0].scrollHeight);
 
                         $('.nav.flex-column').prepend(`
                 <div class="d-flex align-items-center conversation-item">
@@ -406,8 +413,14 @@
                         alert(response.errors_message.join('\n'));
                     }
                 },
-                error: function () {
-                    alert('An error occurred. Please try again.');
+                error: function (jqXHR) {
+                    try {
+                        const response = JSON.parse(jqXHR.responseText);
+                        const errorObj = JSON.parse(response.error.substring("API request failed: ".length));
+                        alert(errorObj.error.message);
+                    } catch (e) {
+                        alert("An error occurred. Please try again.");
+                    }
                 }
             });
         });
