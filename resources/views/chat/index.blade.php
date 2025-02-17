@@ -357,9 +357,9 @@
                             </div>
                         </div>
                     `);
-
-
-
+                        const outputContainer = $('.card-body.scrollable');
+                        outputContainer.scrollTop(outputContainer[0].scrollHeight);
+                        
                         $('.nav.flex-column').prepend(`
                 <div class="d-flex align-items-center conversation-item">
                     <div class="col-auto">
@@ -444,6 +444,8 @@
             </div>
         </div>
         `);
+        const messagesContainer = $('#messages-container');
+        messagesContainer.scrollTop(messagesContainer[0].scrollHeight);
 
         $.ajax({
             type: "POST",
