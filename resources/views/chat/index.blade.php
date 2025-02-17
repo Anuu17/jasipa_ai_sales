@@ -303,11 +303,8 @@
                 </div>
             </div>
             `);
-
-
-
-
-
+            const outputContainer = $('.card-body.scrollable');
+            outputContainer.scrollTop(outputContainer[0].scrollHeight);
 
             const formData = new FormData();
             formData.append('file', fileInput.files[0]);
@@ -360,8 +357,8 @@
                             </div>
                         </div>
                     `);
-                        const outputContainer = $('#output-container');
-                        outputContainer.scrollTop(outputContainer[0].scrollHeight);
+
+
 
                         $('.nav.flex-column').prepend(`
                 <div class="d-flex align-items-center conversation-item">
