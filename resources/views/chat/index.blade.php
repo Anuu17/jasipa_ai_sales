@@ -359,7 +359,7 @@
                     `);
                         const outputContainer = $('.card-body.scrollable');
                         outputContainer.scrollTop(outputContainer[0].scrollHeight);
-                        
+
                         $('.nav.flex-column').prepend(`
                 <div class="d-flex align-items-center conversation-item">
                     <div class="col-auto">
@@ -498,7 +498,7 @@
 </script>
 <script>
     $(document).ready(function () {
-        $('.nav-link.conversation-tab').on('click', function (e) {
+        $(document).on('click', '.nav-link.conversation-tab', function (e) {
             e.preventDefault();
 
             var conversationId = $(this).data('id');
@@ -513,7 +513,7 @@
                     $('#skills-experience').val(response.skillsAndExperience).prop('disabled', true);
                     $('.disable-on-load').prop('disabled', true);
                     $('#prompt_reset').attr('data-disabled', 'true').addClass('disabled');
-                    $(fileInput).prop('disabled', true);
+                    $(fileInput).val('').prop('disabled', true);
                     $('#sendMessage').prop('disabled', true);
 
                     $('#output-container').html(`
