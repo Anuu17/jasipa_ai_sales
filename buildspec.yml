@@ -1,0 +1,5 @@
+version: 0.0
+os: linux
+files:
+- source: /
+  destination: /home/Admin/src/jasipa_ai_sales
